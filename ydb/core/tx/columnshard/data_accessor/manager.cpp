@@ -90,7 +90,7 @@ void TLocalManager::DrainQueue() {
 }
 
 void TLocalManager::ResizeCache() {
-    auto size = TotalMemorySize / Managers.size();
+    auto size = TotalMemorySize / (Managers.size() > 0 ? Managers.size() : 1);
     for (auto&& [_, manager] : Managers) {
         manager->Resize(size);
     }

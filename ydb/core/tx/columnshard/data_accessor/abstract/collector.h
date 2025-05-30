@@ -84,6 +84,7 @@ private:
     virtual void DoAskData(THashMap<TInternalPathId, TPortionsByConsumer>&& portions, const std::shared_ptr<IAccessorCallback>& callback) = 0;
     virtual TDataCategorized DoAnalyzeData(const TPortionsByConsumer& portions) = 0;
     virtual void DoModifyPortions(const std::vector<TPortionDataAccessor>& add, const std::vector<ui64>& remove) = 0;
+    virtual void DoResize(ui64 size) = 0;
 
 public:
     virtual ~IGranuleDataAccessor() = default;
@@ -104,6 +105,9 @@ public:
     TDataCategorized AnalyzeData(const TPortionsByConsumer& portions);
     void ModifyPortions(const std::vector<TPortionDataAccessor>& add, const std::vector<ui64>& remove) {
         return DoModifyPortions(add, remove);
+    }
+    void Resize(ui64 size) {
+      DoResize(size);
     }
 };
 

@@ -3,6 +3,7 @@
 namespace NKikimr::NOlap::NDataAccessorControl {
 
 NActors::IActor* TNodeActor::CreateActor() {
+    AFL_WARN(NKikimrServices::TX_COLUMNSHARD)("IURII", "CREATE");
     return new TNodeActor();
 }
 

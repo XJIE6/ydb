@@ -130,6 +130,8 @@ private:
     TAccessorSignals Counters;
     const std::shared_ptr<IAccessorCallback> AccessorCallback;
 
+    ui64 TotalMemorySize = 1 << 30;
+
     class TPortionToAsk {
     private:
         TPortionInfo::TConstPtr Portion;
@@ -153,11 +155,13 @@ private:
     TPositiveControlInteger PortionsAskInFlight;
 
     void DrainQueue();
+    void ResizeCache();
 
     virtual void DoAskData(const TTabletId tabletId, const std::shared_ptr<TDataAccessorsRequest>& request) override;
     virtual void DoRegisterController(std::unique_ptr<IGranuleDataAccessor>&& controller, const bool update) override;
     virtual void DoUnregisterController(const TTabletId tabletId, const TInternalPathId pathId) override {
         AFL_VERIFY(Managers.erase(TManagerKey{tabletId, pathId}));
+        ResizeCache();
     }
     virtual void DoAddPortion(const TTabletId tabletId, const TPortionDataAccessor& accessor) override;
     virtual void DoRemovePortion(const TTabletId tabletId, const TPortionInfo::TConstPtr& portionInfo) override {
@@ -175,6 +179,7 @@ private:
         for (auto&& managerKey : toErase) {
             Managers.erase(managerKey);
         }
+        ResizeCache();
     }
 
 public:

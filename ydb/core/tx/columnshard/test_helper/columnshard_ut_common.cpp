@@ -48,11 +48,11 @@ void TTester::Setup(TTestActorRuntime& runtime) {
 
     app.AddDomain(domain.Release());
 
-    for (ui32 nodeIndex = 0; nodeIndex < runtime.GetNodeCount(); ++nodeIndex) {
-        runtime.AddLocalService(NKikimr::NOlap::NDataAccessorControl::TNodeActor::MakeActorId(runtime.GetNodeId(nodeIndex)),
-        TActorSetupCmd(NKikimr::NOlap::NDataAccessorControl::TNodeActor::CreateActor(), TMailboxType::HTSwap, 0),
-        nodeIndex);
-    }
+    // for (ui32 nodeIndex = 0; nodeIndex < runtime.GetNodeCount(); ++nodeIndex) {
+    //     runtime.AddLocalService(NKikimr::NOlap::NDataAccessorControl::TNodeActor::MakeActorId(runtime.GetNodeId(nodeIndex)),
+    //     TActorSetupCmd(NKikimr::NOlap::NDataAccessorControl::TNodeActor::CreateActor(), TMailboxType::HTSwap, 0),
+    //     nodeIndex);
+    // }
 
     SetupTabletServices(runtime, &app);
 
@@ -567,7 +567,7 @@ namespace NKikimr::NColumnShard {
              Y_UNUSED(f);
              fields.emplace_back(idx++);
          }
- 
+
          NTxUT::TShardReader reader(runtime, TTestTxConfig::TxTablet0, tableId, snapshot);
          reader.SetReplyColumnIds(fields);
          auto rb = reader.ReadAll();
